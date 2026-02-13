@@ -6,20 +6,18 @@
 
     function startPlugin() {
 
+        // Добавляем пункт в меню
         Lampa.Component.add('vk_search', {
             name: 'VK Видео',
-            component: function (object) {
+            icon: 'ondemand_video',
+            component: function () {
 
                 this.create = function () {
-                    this.render();
-                };
-
-                this.render = function () {
                     this.search('');
                 };
 
                 this.search = function (query) {
-                    let token = Lampa.Storage.get('vk_token');
+                    let token = Lampa.Storage.get('vk_token', '');
 
                     if (!token) {
                         Lampa.Noty.show('Введите VK Token в настройках');
@@ -27,10 +25,10 @@
                     }
 
                     fetch(`${VK_API}?q=${encodeURIComponent(query)}&count=20&access_token=${token}&v=${API_VERSION}`)
-                        .then(res => res.json())
+                        .then(r => r.json())
                         .then(data => {
 
-                            if (!data.response || !data.response.items) {
+                            if (!data.response) {
                                 Lampa.Noty.show('Ошибка VK API');
                                 return;
                             }
@@ -63,27 +61,26 @@
 
                             this.build(items);
 
-                        }).catch(() => {
-                            Lampa.Noty.show('Ошибка соединения');
-                        });
+                        })
+                        .catch(() => Lampa.Noty.show('Ошибка соединения'));
                 };
             }
         });
 
-        Lampa.Template.add('settings_vk', `
-            <div class="settings__line">
-                <div class="settings__label">VK Access Token</div>
-                <div class="settings__field">
-                    <input type="text" class="settings__input" data-name="vk_token" placeholder="Введите токен"/>
-                </div>
-            </div>
-        `);
-
-        Lampa.SettingsApi.addComponent({
-            component: 'settings_vk',
-            icon: 'account_circle',
-            name: 'VK Видео',
+        // Добавляем настройку правильно
+        Lampa.SettingsApi.addParam({
+            component: 'interface',
+            param: {
+                name: 'vk_token',
+                type: 'input',
+                placeholder: 'Введите VK Access Token',
+                default: '',
+            },
+            field: {
+                name: 'VK Видео — Token'
+            }
         });
+
     }
 
     if (window.appready) startPlugin();
