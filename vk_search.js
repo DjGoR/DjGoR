@@ -5,7 +5,6 @@
     const API_VERSION = '5.131';
 
     // ВСТАВЬ СЮДА СВОЙ ТОКЕН
-    const VK_TOKEN = 'vk1.a.Irlo4LyAC4h4t2LWEjZQgHdoDb_en4h9_xcXkldIVax0oeTEt294agRLMslhNv-3KtvPtgR-f-Yu1-e-Bos8gxuR-Y9_2625xH3GdR0odprCZeifiKonzLmMA7_onZRe8G3Y8Mhx3cZIUIE6ww2lqGrLgp95EP-8yJKEua1EC4zQfeyM6amb6Po460MtHptIXY6Fo-yNTR8eBKX2ikU4Gg&expires_in=0&user_id=12722969';
 
     function startPlugin() {
 
