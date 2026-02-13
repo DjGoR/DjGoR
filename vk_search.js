@@ -4,10 +4,12 @@
     const VK_API = 'https://api.vk.com/method/video.search';
     const API_VERSION = '5.131';
 
+    // ВСТАВЬ СЮДА СВОЙ ТОКЕН
+    const VK_TOKEN = 'vk1.a.Irlo4LyAC4h4t2LWEjZQgHdoDb_en4h9_xcXkldIVax0oeTEt294agRLMslhNv-3KtvPtgR-f-Yu1-e-Bos8gxuR-Y9_2625xH3GdR0odprCZeifiKonzLmMA7_onZRe8G3Y8Mhx3cZIUIE6ww2lqGrLgp95EP-8yJKEua1EC4zQfeyM6amb6Po460MtHptIXY6Fo-yNTR8eBKX2ikU4Gg&expires_in=0&user_id=12722969';
+
     function startPlugin() {
 
-        // Добавляем пункт в меню
-        Lampa.Component.add('vk_search', {
+        Lampa.Component.add('vk_video', {
             name: 'VK Видео',
             icon: 'ondemand_video',
             component: function () {
@@ -17,14 +19,8 @@
                 };
 
                 this.search = function (query) {
-                    let token = Lampa.Storage.get('vk_token', '');
 
-                    if (!token) {
-                        Lampa.Noty.show('Введите VK Token в настройках');
-                        return;
-                    }
-
-                    fetch(`${VK_API}?q=${encodeURIComponent(query)}&count=20&access_token=${token}&v=${API_VERSION}`)
+                    fetch(`${VK_API}?q=${encodeURIComponent(query)}&count=20&access_token=${VK_TOKEN}&v=${API_VERSION}`)
                         .then(r => r.json())
                         .then(data => {
 
@@ -64,20 +60,6 @@
                         })
                         .catch(() => Lampa.Noty.show('Ошибка соединения'));
                 };
-            }
-        });
-
-        // Добавляем настройку правильно
-        Lampa.SettingsApi.addParam({
-            component: 'interface',
-            param: {
-                name: 'vk_token',
-                type: 'input',
-                placeholder: 'Введите VK Access Token',
-                default: '',
-            },
-            field: {
-                name: 'VK Видео — Token'
             }
         });
 
